@@ -1,0 +1,68 @@
+<form [formGroup]="CustomerModel.form" (ngSubmit) = "Add()">
+
+    Customer Code: <input id="code" name="Code" formControlName="CustomerCodeControl" [(ngModel)]="CustomerModel.Code" type="text" ><br>
+    Customer Name: <input id="name" name="Name" formControlName="CustomerNameControl" [(ngModel)]="CustomerModel.Name" type="text" ><br>
+    Customer Amount: <input name="Amount" formControlName="CustomerAmountControl" [(ngModel)]="CustomerModel.Amount" type="text"><br>
+    <button [disabled]="!(CustomerModel.form.valid)" type="submit" value="Add">Add</button>
+    
+</form>
+
+<div *ngIf="CustomerModel.Name1.invalid && (CustomerModel.Name1.dirty || CustomerModel.Name1.touched)"
+    class="alert alert-danger">
+
+  <div *ngIf="CustomerModel.Name1.errors.required">
+    Name is required.
+  </div>
+</div>
+
+<div *ngIf="CustomerModel.Code1.invalid && (CustomerModel.Code1.dirty || CustomerModel.Code1.touched)">
+    <div *ngIf="CustomerModel.Code1.errors.required">
+        Code is required.
+      </div>    
+    <div *ngIf="CustomerModel.Code1.errors.pattern">
+    Code must be 4 characters long.
+  </div>
+</div>
+<div *ngIf="CustomerModel.Amount1.invalid && (CustomerModel.Amount1.dirty || CustomerModel.Amount1.touched)">
+    <div *ngIf="CustomerModel.Amount1.errors.pattern">
+        Amount should be numeric
+    </div>
+</div>
+
+<!-- 
+
+    <div [hidden]="!(CustomerModel.Code1.errors?.pattern)">Customer Code format is not proper</div><br>
+    <div [hidden]="!(CustomerModel.Code1.errors?.required)">Customer Code is Required</div><br>
+    <div [hidden]="!(CustomerModel.Name1.errors?.required)">Customer Name is Required</div><br>
+
+ -->
+
+<table>
+    <tr>
+        <th>Customer Code</th>
+        <th>Customer Name</th>
+        <th>Customer Amount</th>
+    </tr>
+    <tr *ngFor="let cust of CustomerModels">
+        <td>{{cust.Code}}</td>
+        <td>{{cust.Name}}</td>
+        <td>{{cust.Amount}}</td>
+    </tr>
+</table>
+
+<!-- 
+    <td>{{cust.CustomerCodeControl}}</td>
+    <td>{{cust.CustomerNameControl}}</td>
+    <td>{{cust.CustomerAmountControl}}</td>
+    [ngModelOptions]="{standalone: true}"
+    [(ngModel)]="CustomerModel.Name"
+    [grid-Columns]="[{'colName':'CustomerCodeControl'}, {'colName':'CustomerNameControl'}, {'colName': 'CustomerAmountControl'}]
+
+ -->
+ <div>{{CustomerModel.Code}}</div><br>
+ <div>{{CustomerModel.Name}}</div><br>
+ <div>{{CustomerModel.Amount}}</div><br>
+
+ 
+ <my-grid [grid-Columns]="[{'colName':'Code'}, {'colName':'Name'}, {'colName': 'Amount'}]" 
+ [grid-Data]="CustomerModels" (grid-selected)="SelectCustomer($event)"></my-grid>
